@@ -59,17 +59,17 @@ fi
 # validate empty installation directories
 if [[ -d $SIESTA_DIR ]]; then
   box_out "Existing installation of Siesta found at $SIESTA_DIR..." "Please remove the directory manually or choose a different base directory..."
-  exit 3
+#  exit 3
 fi
 
 if [[ -d $OPENBLAS_DIR ]]; then
   box_out "Existing installation of OpenBLAS found at $OPENBLAS_DIR..." "Please remove the directory manually or choose a different base directory..."
-  exit 3
+#  exit 3
 fi
 
 if [[ -d $SCALAPACK_DIR ]]; then
   box_out "Existing installation of ScaLAPACK found at $SCALAPACK_DIR..." "Please remove the directory manually or choose a different base directory..."
-  exit 3
+#  exit 3
 fi
 
 # print validation success message

@@ -14,7 +14,7 @@ box_out "Ubuntu package installation OK"
 if [[ ! -d $BASE_DIR ]]; then
   sudo mkdir -p $BASE_DIR
 fi
-sudo mkdir $SIESTA_DIR $OPENBLAS_DIR $SCALAPACK_DIR
+sudo mkdir -p $SIESTA_DIR $OPENBLAS_DIR $SCALAPACK_DIR
 sudo chmod -R 777 $SIESTA_DIR $OPENBLAS_DIR $SCALAPACK_DIR
 
 box_out "Created target directories..."
@@ -23,7 +23,7 @@ box_out "Created target directories..."
 
 # download and extract OpenBLAS source files
 cd $OPENBLAS_DIR
-curl -kLo OpenBLAS.tar.gz --progress-bar https://ufpr.dl.sourceforge.net/project/openblas/v0.3.3/OpenBLAS%200.3.3%20version.tar.gz
+curl -kLo OpenBLAS.tar.gz --progress-bar https://github.com/OpenMathLib/OpenBLAS/releases/download/v0.3.3/OpenBLAS-0.3.3.tar.gz
 tar xzf OpenBLAS.tar.gz && rm OpenBLAS.tar.gz
 
 # download and extract Siesta source
@@ -46,7 +46,7 @@ box_out "Going to install the following libraries:" "+FLOOK v$FLOOK_VERSION" "+Z
 # download Siesta dependencies
 cd "$SIESTA_DIR/siesta-$SIESTA_FULL_VERSION/Docs"
 curl -kLo "flook-$FLOOK_VERSION.tar.gz" --progress-bar "https://github.com/ElectronicStructureLibrary/flook/releases/download/v$FLOOK_VERSION/flook-$FLOOK_VERSION.tar.gz"
-curl -kLo "zlib-$ZLIB_VERSION.tar.gz" --progress-bar "https://zlib.net/zlib-$ZLIB_VERSION.tar.gz"
+curl -kLo "zlib-$ZLIB_VERSION.tar.gz" --progress-bar "https://github.com/madler/zlib/archive/refs/tags/v$ZLIB_VERSION.tar.gz"
 curl -kLo "hdf5-$HDF_FULL_VERSION.tar.bz2" --progress-bar "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-$HDF_PART_VERSION/hdf5-$HDF_FULL_VERSION/src/hdf5-$HDF_FULL_VERSION.tar.bz2"
 curl -kLo "netcdf-c-$NC_VERSION.tar.gz" --progress-bar "https://github.com/Unidata/netcdf-c/archive/v$NC_VERSION.tar.gz"
 curl -kLo "netcdf-fortran-$NF_VERSION.tar.gz" --progress-bar "https://github.com/Unidata/netcdf-fortran/archive/v$NF_VERSION.tar.gz"
@@ -54,11 +54,10 @@ curl -kLo "netcdf-fortran-$NF_VERSION.tar.gz" --progress-bar "https://github.com
 box_out "Downloaded package files..."
 
 # install OpenBLAS
-cd $OPENBLAS_DIR
-cd "$(find . -type d -name xianyi-OpenBLAS*)"
+cd $OPENBLAS_DIR/OpenBLAS-0.3.3
 make DYNAMIC_ARCH=0 CC=gcc FC=gfortran HOSTCC=gcc BINARY=64 INTERFACE=64 NO_AFFINITY=1 NO_WARMUP=1 USE_OPENMP=0 USE_THREAD=0 LIBNAMESUFFIX=nonthreaded > blas1.log 2>&1
 make PREFIX=$OPENBLAS_DIR LIBNAMESUFFIX=nonthreaded install > ../blas2.log 2>&1
-cd $OPENBLAS_DIR && rm -rf "$(find $OPENBLAS_DIR -maxdepth 1 -type d -name xianyi-OpenBLAS*)"
+#cd $OPENBLAS_DIR && rm -rf "$(find $OPENBLAS_DIR -maxdepth 1 -type d -name xianyi-OpenBLAS*)"
 
 box_out "Installed OpenBLAS..."
 
